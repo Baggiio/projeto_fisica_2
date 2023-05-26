@@ -6,10 +6,13 @@
 # Importando as bibliotecas
 
 from math import *
+import random
 from scipy import integrate
 from matplotlib import pyplot as plt
 import numpy as np
 from tkinter import *
+from PIL import ImageTk, Image
+import os
 
 # Constantes
 
@@ -134,69 +137,69 @@ class Caixa:
         p = (2 / L) * pow((sin((n * pi * xp) / L)), 2)
         return p
     
-    def plotaGraficos(self, A, k1, k2, n1, n2, L):
+def plotaGraficos(A, k1, k2, n1, n2, L):
 
-        def f1(x):
-            return A * np.sin(k1 * x)
-        
-        def f2(x):
-            return A * np.sin(k2 * x)
-        
-        def g1(x):
-            return (A * np.sin(k1 * x))**2
-        
-        def g2(x):
-            return (A * np.sin(k2 * x))**2
-        
-        x = np.linspace(0, L, 100)
+    def f1(x):
+        return A * np.sin(k1 * x)
+    
+    def f2(x):
+        return A * np.sin(k2 * x)
+    
+    def g1(x):
+        return (A * np.sin(k1 * x))**2
+    
+    def g2(x):
+        return (A * np.sin(k2 * x))**2
+    
+    x = np.linspace(0, L, 100)
 
-        try:
-            plt.close()
-        except:
-            pass
-        
-        fig, ax = plt.subplots(2,2, figsize=(12, 8))
-        fig.tight_layout(pad=5.0)
+    try:
+        plt.close()
+    except:
+        pass
+    
+    fig, ax = plt.subplots(2,2, figsize=(12, 8))
+    fig.tight_layout(pad=5.0)
 
-        ax[0,0].set(
-            title=("Gráfico da Função de Onda da Partícula no nível %d" % n1),
-            xlabel="x (Â)",
-            ylabel=("Ψ%d" % n1),
-        )
-        ax[0,0].axhline(y=0, color="k", linestyle="-", linewidth=0.5)
+    ax[0,0].set(
+        title=("Gráfico da Função de Onda da Partícula no nível %d" % n1),
+        xlabel="x (Â)",
+        ylabel=("Ψ%d" % n1),
+    )
+    ax[0,0].axhline(y=0, color="k", linestyle="-", linewidth=0.5)
 
-        yf1 = f1(x)
-        ax[0,0].plot(x, yf1)
+    yf1 = f1(x)
+    ax[0,0].plot(x, yf1)
 
-        ax[0,1].set(
-            title=("Gráfico da Função de Onda da Partícula no nível %d" % n2),
-            xlabel="x (Â)",
-            ylabel=("Ψ%d" % n2),
-        )
-        ax[0,1].axhline(y=0, color="k", linestyle="-", linewidth=0.5)
+    ax[0,1].set(
+        title=("Gráfico da Função de Onda da Partícula no nível %d" % n2),
+        xlabel="x (Â)",
+        ylabel=("Ψ%d" % n2),
+    )
+    ax[0,1].axhline(y=0, color="k", linestyle="-", linewidth=0.5)
 
-        yf2 = f2(x)
-        ax[0,1].plot(x, yf2)
+    yf2 = f2(x)
+    ax[0,1].plot(x, yf2)
 
-        ax[1,0].set(
-            title=("Gráfico da Probabilidade da Partícula no nível %d" % n1),
-            xlabel="x (Â)",
-            ylabel=("|Ψ%d|²" % n1),
-        )
-        ax[1,0].axhline(y=0, color="k", linestyle="-", linewidth=0.5)
+    ax[1,0].set(
+        title=("Gráfico da Probabilidade da Partícula no nível %d" % n1),
+        xlabel="x (Â)",
+        ylabel=("|Ψ%d|²" % n1),
+    )
+    ax[1,0].axhline(y=0, color="k", linestyle="-", linewidth=0.5)
 
-        yg1 = g1(x)
-        ax[1,0].plot(x, yg1)
+    yg1 = g1(x)
+    ax[1,0].plot(x, yg1)
 
-        ax[1,1].set(
-            title=("Gráfico da Probabilidade da Partícula no nível %d" % n2),
-            xlabel="x (Â)",
-            ylabel=("|Ψ%d|²" % n2),
-        )
-        ax[1,1].axhline(y=0, color="k", linestyle="-", linewidth=0.5)
+    ax[1,1].set(
+        title=("Gráfico da Probabilidade da Partícula no nível %d" % n2),
+        xlabel="x (Â)",
+        ylabel=("|Ψ%d|²" % n2),
+    )
+    ax[1,1].axhline(y=0, color="k", linestyle="-", linewidth=0.5)
 
-        yg2 = g2(x)
-        ax[1,1].plot(x, yg2)
+    yg2 = g2(x)
+    ax[1,1].plot(x, yg2)
 
 class GUI:
     def __init__(self):
@@ -409,7 +412,10 @@ class GUI:
 
         # botao que abre janela dos gráficos
         self.botaoGraficos = Button(self.janelaOpcao1, text="Gráficos", bg="SeaGreen1", fg="black", font="Calibri 14 bold", command=self.abrirGraficos, borderwidth=2, relief="solid", activebackground="SeaGreen3")
-        self.botaoGraficos.place(relx=0.75, rely=0.93, relwidth=0.2, relheight=0.05, anchor=CENTER)
+        self.botaoGraficos.place(relx=0.6, rely=0.93, relwidth=0.2, relheight=0.05, anchor=CENTER)
+
+        self.botaoSimulacao = Button(self.janelaOpcao1, text="Simulação", bg="SeaGreen1", fg="black", font="Calibri 14 bold", command=self.abrirSimulacao, borderwidth=2, relief="solid", activebackground="SeaGreen3")
+        self.botaoSimulacao.place(relx=0.85, rely=0.93, relwidth=0.2, relheight=0.05, anchor=CENTER)
 
     def calcularFuncaoOndaOutrosParametros(self):
         try:
@@ -419,6 +425,10 @@ class GUI:
             a = float(self.entradaA.get())
             b = float(self.entradaB.get())
             caixa = Caixa(L, ni, nf, a, b)
+
+            self.L = L
+            self.ni = ni
+            self.nf = nf
         except:
             print("Insira informações válidas!")
 
@@ -427,6 +437,9 @@ class GUI:
             A, k2 = caixa.funcaoQuanticaFinal(nf, L)
             integrali = caixa.probabilidadeIntegralNi(A, k1, a, b)
             integralf = caixa.probabilidadeIntegralNf(A, k2, a, b)
+            self.A = A
+            self.k1 = k1
+            self.k2 = k2
         except:
             print("Erro ao calcular!")
 
@@ -555,6 +568,27 @@ class GUI:
             except:
                 print("Erro ao calcular!")
 
+        energias = []
+
+        for i in range(1, 6):
+            Ej = (i**2 * hm**2) / (8 * me * L**2)
+            Ev = Ej * j
+            energias.append(Ev)
+
+        plt.close()
+        fig, ax = plt.subplots()
+        ax.axhline(y=energias[0], color='k')
+        ax.axhline(y=energias[1], color='k')
+        ax.axhline(y=energias[2], color='k')
+        ax.axhline(y=energias[3], color='k')
+        ax.axhline(y=energias[4], color='k')
+        ax.set_xlim(0, L)
+        ax.set_ylim(0, energias[4]+energias[4]*0.1)
+        ax.set_xlabel('x (m)')
+        ax.set_ylabel('E (eV)')
+        plt.savefig('canvas.png', dpi = 150)
+        plt.close()
+
         try:
             self.funcaoOndaInicial.configure(state="normal")
             self.funcaoOndaInicial.delete(1.0, END)
@@ -581,11 +615,51 @@ class GUI:
             self.probabilidadeParticulaFinal.configure(state="disabled")
         except:
             print("Erro ao calcular!")
-
-        caixa.plotaGraficos(A, k1, k2, ni, nf, L)
  
     def abrirGraficos(self):
+        try:
+            plotaGraficos(self.A, self.k1, self.k2, self.ni, self.nf, self.L)
+        except:
+            print("Erro ao plotar gráficos! Talvez os valores não tenham sido definidos ainda.")
         plt.show()
+
+    def abrirSimulacao(self):
+        if os.path.isfile("canvas.png"):
+            self.janelaSimulacao = Toplevel(self.janela)
+            self.janelaSimulacao.title("Simulação")
+            self.janelaSimulacao.geometry("960x720")
+
+            self.canvas = Canvas(self.janelaSimulacao, width=960, height=720)
+            self.canvas.pack()
+
+            self.img = PhotoImage(file="canvas.png")
+            self.canvas.create_image(0, 0, anchor=NW, image=self.img)
+
+            def animate_gif(canvas, image, frame_index):
+                # Atualiza a imagem exibida no canvas com o próximo quadro do GIF
+                try:
+                    image.seek(frame_index)
+                except (EOFError):
+                    frame_index = 0
+                    image.seek(frame_index)
+                photo = ImageTk.PhotoImage(image)
+                canvas.itemconfigure(canvas_image, image=photo)
+                canvas.image = photo
+
+                # Define um atraso entre os quadros para criar a animação
+                delay = image.info['duration']
+                canvas.after(delay, animate_gif, canvas, image, frame_index + 1)
+
+            image = Image.open('Simulation.gif')
+
+            photo = ImageTk.PhotoImage(image)
+            canvas_image = self.canvas.create_image(121, 88, anchor=NW, image=photo)
+            self.canvas.image = photo
+
+            animate_gif(self.canvas, image, random.randint(0, image.n_frames - 1))
+
+        else:
+            pass
 
     def opcao2(self):
         # cria a janela da opcao2
